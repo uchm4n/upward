@@ -1,1 +1,1 @@
-## Upward: the sipmple testing application
+## Upward: a simple test application
