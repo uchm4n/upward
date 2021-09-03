@@ -15,16 +15,7 @@
                         @endif
 
 
-                        @auth
-
-                            {{ __('You are logged in!') }}
-
-                        @endauth
-
-
-                        @guest
-                            <u-table :auth="{{$auth}}"></u-table>
-                        @endguest
+                        <u-table :auth="{{$auth}}"></u-table>
 
                     </div>
                 </div>

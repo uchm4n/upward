@@ -20,9 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/products', [ProductsController::class, 'all']);
-Route::middleware('auth')->group(function () {
-    Route::post('/products', [ProductsController::class, 'create']);
-    Route::put('/products/{id}', [ProductsController::class, 'update']);
-    Route::delete('/products/{id}', [ProductsController::class, 'delete']);
-});
+Route::get(   '/products', [ProductsController::class, 'all']);
+Route::post(  '/products', [ProductsController::class, 'create']);
+Route::put(   '/products', [ProductsController::class, 'update']);
+Route::delete('/products/{id}', [ProductsController::class, 'destroy']);

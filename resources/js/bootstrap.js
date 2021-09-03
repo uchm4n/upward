@@ -22,7 +22,13 @@ try {
 
 // rename axios to http
 window.http = require('axios');
-window.http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.http.defaults.withCredentials = true;
+window.http.defaults.headers.common = {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+    'X-Requested-With': 'XMLHttpRequest'
+};
+
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
