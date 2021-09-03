@@ -2240,32 +2240,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                _this3.loading = true;
+
                 if (!_this3.creating) {
-                  _context3.next = 5;
+                  _context3.next = 6;
                   break;
                 }
 
-                _context3.next = 3;
+                _context3.next = 4;
                 return http.post('/api/products/', _this3.selected)["catch"](function (error) {
                   return _this3.errors = error.response.data.message;
                 });
 
-              case 3:
-                _context3.next = 7;
+              case 4:
+                _context3.next = 8;
                 break;
 
-              case 5:
-                _context3.next = 7;
+              case 6:
+                _context3.next = 8;
                 return http.put('/api/products/', _this3.selected)["catch"](function (error) {
                   return _this3.errors = error.response.data.message;
                 });
 
-              case 7:
+              case 8:
                 _this3.showModal = _.size(_this3.errors) > 0;
-                _context3.next = 10;
+                _context3.next = 11;
                 return _this3.all();
 
-              case 10:
+              case 11:
               case "end":
                 return _context3.stop();
             }

@@ -162,6 +162,7 @@ export default {
             })
         },
         async submitModal() {
+            this.loading = true
             if (this.creating) {
                 await http.post('/api/products/', this.selected).catch((error) => this.errors = error.response.data.message)
             } else {
