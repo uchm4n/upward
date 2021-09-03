@@ -23,8 +23,7 @@
 
 
                         @guest
-
-                            You are a guest
+                            <guest-table></guest-table>
                         @endguest
 
                     </div>

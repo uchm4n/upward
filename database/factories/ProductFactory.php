@@ -3,9 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ProductsFactory extends Factory
+class ProductFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
@@ -22,7 +23,10 @@ class ProductsFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'year' => $this->faker->year(),
+            'photo' => $this->faker->imageUrl(),
+            'user_id' => 1
         ];
     }
 }

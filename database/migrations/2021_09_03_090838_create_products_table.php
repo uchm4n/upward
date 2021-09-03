@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->integer('year');
             $table->string('photo');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }
