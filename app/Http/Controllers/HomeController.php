@@ -13,7 +13,8 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // check auth in blade
+        //$this->middleware('auth');
     }
 
     /**
