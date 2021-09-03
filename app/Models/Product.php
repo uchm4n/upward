@@ -11,6 +11,7 @@ class Product extends Model
 
     protected $guarded = ['id'];
 
+    protected $casts = ['created_at' => 'datetime:Y-m-d H:i:s',];
 
     /**
      * Get the user that owns the Product.
