@@ -22,9 +22,12 @@ class ProductsController extends Controller
     public function create(ProductRequest $request)
     {
         try {
-            dd($request->all());
-            $product = new Product();
-            $product->create($request->all());
+            Product::create([
+                'name'    => $request->get('name'),
+                'year'    => $request->get('year'),
+                'photo'   => $request->get('photo'),
+                'user_id' => $request->user()->id,
+            ]);
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 500);
         }

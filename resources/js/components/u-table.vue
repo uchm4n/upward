@@ -2,9 +2,7 @@
 
     <div>
 
-        <div class="d-flex justify-content-center" v-if="loading">
-            <div class="spinner-border" role="status"></div>
-        </div>
+        <u-spinner v-if="loading"></u-spinner>
 
         <table class="table table-hover">
             <thead>
@@ -49,37 +47,56 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
+                                    <p v-show="this.errors">
+                                        <small class="text-danger">{{ this.errors }}</small>
+                                    </p>
 
-                                    <form @submit.prevent="submitModal">
+                                    <ValidationObserver v-slot="{ invalid }">
+                                        <form @submit.prevent="submitModal">
+                                            <u-spinner v-if="loading"></u-spinner>
 
-
-                                        <div class="mb-3">
-                                            <label for="nameID" class="form-label">Name</label>
-                                            <input v-model="selected.name" type="text" class="form-control" id="nameID">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="yearID" class="form-label">Year</label>
-                                            <input v-model="selected.year" type="text" class="form-control" id="yearID">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="photoID" class="form-label">Photo</label>
-                                            <input v-model="selected.photo" type="text" class="form-control" id="photoID">
-                                        </div>
+                                            <ValidationProvider rules="required" v-slot="v">
+                                                <div class="mb-3">
+                                                    <label for="nameID" class="form-label">Name</label>
+                                                    <input v-model="selected.name" type="text" class="form-control" id="nameID">
+                                                    <small class="text-danger">{{ v.errors[0] }}</small>
+                                                </div>
+                                            </ValidationProvider>
 
 
-                                        <div class="mb-3">
-                                            <label for="dateID" class="form-label">Date</label>
-                                            <input v-model="selected.created_at" type="text" class="form-control" id="dateID" data-provide="datepicker">
-                                        </div>
+                                            <ValidationProvider rules="required|integer" v-slot="v">
+                                                <div class="mb-3">
+                                                    <label for="yearID" class="form-label">Year</label>
+                                                    <input v-model="selected.year" type="text" class="form-control" id="yearID">
+                                                    <small class="text-danger">{{ v.errors[0] }}</small>
+                                                </div>
+                                            </ValidationProvider>
+
+                                            <ValidationProvider rules="required" v-slot="v">
+                                                <div class="mb-3">
+                                                    <label for="photoID" class="form-label">Photo</label>
+                                                    <input v-model="selected.photo" type="text" class="form-control" id="photoID">
+                                                    <small class="text-danger">{{ v.errors[0] }}</small>
+                                                </div>
+                                            </ValidationProvider>
 
 
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </div>
-                                    </form>
+                                            <ValidationProvider rules="required" v-slot="v">
+                                                <div class="mb-3">
+                                                    <label for="dateID" class="form-label">Date</label>
+                                                    <input v-model="selected.created_at" type="text" class="form-control" id="dateID" data-provide="datepicker">
+                                                    <small class="text-danger">{{ v.errors[0] }}</small>
+                                                </div>
+                                            </ValidationProvider>
+
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
+                                                <button type="submit" class="btn btn-primary" :disabled="invalid">Submit</button>
+                                            </div>
+                                        </form>
+                                    </ValidationObserver>
+
 
                                 </div>
 
@@ -97,15 +114,28 @@
 </template>
 
 <script>
+// Vee Validate
+import {ValidationProvider, ValidationObserver, extend} from 'vee-validate';
+import {required, integer} from 'vee-validate/dist/rules';
+
+extend('integer', integer);
+extend('required', {...required, message: 'This field is required'});
+
 export default {
-    name : "u-table",
-    props: ['auth'],
+    name      : "u-table",
+    props     : ['auth'],
+    components: {
+        ValidationProvider,
+        ValidationObserver
+    },
     data() {
         return {
             showModal: false,
             loading  : false,
+            creating : false,
             products : [],
             selected : {},
+            errors   : null
         }
     },
     methods: {
@@ -117,11 +147,8 @@ export default {
         },
         create() {
             this.showModal = true
-            http.post('/api/products/', this.selected).then(async (res) => {
-                await this.all()
-                this.showModal = false;
-            })
-
+            this.creating = true
+            this.selected = {}
         },
         edit(product) {
             this.showModal = true
@@ -134,11 +161,15 @@ export default {
                 this.loading = false
             })
         },
-        submitModal() {
-            http.put('/api/products/', this.selected).then(async (res) => {
-                await this.all()
-                this.showModal = false;
-            })
+        async submitModal() {
+            if (this.creating) {
+                await http.post('/api/products/', this.selected).catch((error) => this.errors = error.response.data.message)
+            } else {
+                await http.put('/api/products/', this.selected).catch((error) => this.errors = error.response.data.message)
+            }
+
+            this.showModal = _.size(this.errors) > 0;
+            await this.all()
         },
     },
     mounted() {
