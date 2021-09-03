@@ -1932,11 +1932,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "u-table",
-  props: {
-    auth: Boolean
-  },
+  props: ['auth'],
   data: function data() {
     return {
       loading: false,
@@ -1974,6 +1977,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   mounted: function mounted() {
+    console.log(this.auth);
+    this.auth = !this.auth; /// TODO Temp disable auth check
+
     this.all();
   }
 });
@@ -38431,7 +38437,23 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _c("table", { staticClass: "table table-hover" }, [
-      _vm._m(0),
+      _c("thead", [
+        _c("tr", [
+          _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [_vm._v("Year")]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [_vm._v("Photo")]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [_vm._v("Date")]),
+          _vm._v(" "),
+          _vm.auth
+            ? _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
+            : _vm._e()
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "tbody",
@@ -38447,7 +38469,9 @@ var render = function() {
               _c("img", { attrs: { src: product.photo, alt: "", width: "32" } })
             ]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(product.created_at))])
+            _c("td", [_vm._v(_vm._s(product.created_at))]),
+            _vm._v(" "),
+            _vm._m(0, true)
           ])
         }),
         0
@@ -38460,18 +38484,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Year")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Photo")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Date")])
-      ])
+    return _c("td", [
+      _c(
+        "button",
+        { staticClass: "btn btn-success", attrs: { type: "button" } },
+        [_c("i", { staticClass: "fas fa-edit" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-danger", attrs: { type: "button" } },
+        [_c("i", { staticClass: "far fa-trash-alt" })]
+      )
     ])
   }
 ]

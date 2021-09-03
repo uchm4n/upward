@@ -23,7 +23,7 @@
 
 
                         @guest
-                            <u-table :auth="true"></u-table>
+                            <u-table :auth="{{$auth}}"></u-table>
                         @endguest
 
                     </div>

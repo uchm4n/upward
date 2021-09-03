@@ -14,6 +14,7 @@
                 <th scope="col">Year</th>
                 <th scope="col">Photo</th>
                 <th scope="col">Date</th>
+                <th scope="col" v-if="auth">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -23,6 +24,10 @@
                 <td>{{ product.year }}</td>
                 <td><img :src="product.photo" alt="" width="32"></td>
                 <td>{{ product.created_at }}</td>
+                <td>
+                    <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -34,7 +39,7 @@
 <script>
 export default {
     name : "u-table",
-    props: {auth: Boolean},
+    props: ['auth'],
     data() {
         return {
             loading : false,
@@ -50,6 +55,8 @@ export default {
         }
     },
     mounted() {
+        console.log(this.auth);
+        this.auth = !this.auth /// TODO Temp disable auth check
         this.all()
     }
 }
