@@ -29,25 +29,25 @@
     </div>
 
 
-
 </template>
 
 <script>
 export default {
-    name: "guest-table",
+    name : "u-table",
+    props: {auth: Boolean},
     data() {
         return {
-            loading: false,
+            loading : false,
             products: []
         }
     },
-    methods:{
-       async all(){
-           this.loading = true
-           const {data} = await http.get('/api/products')
-           this.products = data.data
-           this.loading = false
-       }
+    methods: {
+        async all() {
+            this.loading = true
+            const {data} = await http.get('/api/products')
+            this.products = data.data
+            this.loading = false
+        }
     },
     mounted() {
         this.all()

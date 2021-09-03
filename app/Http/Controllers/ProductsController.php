@@ -19,6 +19,11 @@ class ProductsController extends Controller
         // TODO
     }
 
+    public function update()
+    {
+        // TODO
+    }
+
 
     public function delete()
     {
