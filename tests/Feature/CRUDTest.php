@@ -41,20 +41,25 @@ class CRUDTest extends TestCase
     {
         $user = User::factory()->create();
         Passport::actingAs($user);
-
-        $create = $this->json('POST', '/api/products', [
-            'id'      => 1111,
+        $data = [
             'name'    => 'test',
             'year'    => '1111',
             'photo'   => 'test',
             'user_id' => $user->id
-        ]);
+        ];
 
+        // Create
+        $create = $this->json('POST', '/api/products', $data);
         $create->assertJson(['message' => 'Products was created']);
-
-        // Delete created
         $latest = Product::all()->pluck('id')->toArray();
-        $delete = $this->json('DELETE', '/api/products/'.end($latest));
+        $latest = end($latest);
+
+        // update
+        $update = $this->json('PUT', '/api/products/', array_merge($data,['id' => $latest]));
+        $update->assertJson(['message' => 'Products was updated']);
+
+        // Delete
+        $delete = $this->json('DELETE', '/api/products/'.$latest);
         $delete->assertJson(['message' => 'Products was deleted']);
     }
 
