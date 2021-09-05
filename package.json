@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
-        "vee-validate": "^3.4.12"
+        "vee-validate": "^3.4.12",
+        "vue-router": "^3.5.2"
     }
 }

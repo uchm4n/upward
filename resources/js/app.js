@@ -7,6 +7,10 @@
 require('./bootstrap');
 
 window.Vue = require('vue').default;
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+const router = new VueRouter({mode: 'history'})
 
 // VEE VAlidate Golbaly
 // import { ValidationProvider } from 'vee-validate';
@@ -37,4 +41,5 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 
 const app = new Vue({
     el: '#app',
+    router
 });

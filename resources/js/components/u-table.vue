@@ -4,6 +4,8 @@
 
         <u-spinner v-if="loading"></u-spinner>
 
+        <u-pagination :data="this.paginate" @pageChange="pageChange"></u-pagination>
+
         <table class="table table-hover">
             <thead>
             <tr>
@@ -41,7 +43,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Modal title</h5>
+                                    <h5 class="modal-title">{{ selected.name }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true" @click="showModal = false">&times;</span>
                                     </button>
@@ -123,7 +125,7 @@ extend('required', {...required, message: 'This field is required'});
 
 export default {
     name      : "u-table",
-    props     : ['auth'],
+    props     : ['auth', 'pageq'],
     components: {
         ValidationProvider,
         ValidationObserver
@@ -134,15 +136,36 @@ export default {
             loading  : false,
             creating : false,
             products : [],
+            paginate : {},
+            page     : null,
             selected : {},
             errors   : null
         }
     },
     methods: {
-        async all() {
+        pageChange(link) {
             this.loading = true
-            const {data} = await http.get('/api/products')
+            http.get(link.url).then((res) => {
+                this.products = res.data.data
+                this.paginate = res.data
+                this.page = res.data.current_page
+                this.loading = false
+                this.$router.replace(`?page=${this.page}`)
+                // this.$router.replace({query: {page: this.page} })
+            })
+        },
+        async all(page) {
+            let url = '/api/products';
+
+            if (page) {
+                url = `/api/products?page=${page}`
+            }
+
+            const {data} = await http.get(url)
+            this.loading = true
             this.products = data.data
+            this.paginate = data
+            this.page = data.current_page ?? 1
             this.loading = false
         },
         create() {
@@ -174,7 +197,7 @@ export default {
         },
     },
     mounted() {
-        this.all()
+        this.all(this.pageq)
     }
 }
 </script>

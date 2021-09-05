@@ -19,7 +19,7 @@
                         @endif
 
 
-                        <u-table :auth="{{$auth}}"></u-table>
+                        <u-table :auth="{{$auth}}" :pageq="{{$page}}"></u-table>
 
                     </div>
                 </div>

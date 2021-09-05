@@ -25,6 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home', ['auth' => (int)auth()->check()]);
+        return view('home', ['auth' => (int)auth()->check(), 'page' => request()->query('page') ?? 1]);
     }
 }
