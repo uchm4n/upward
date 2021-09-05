@@ -17,4 +17,6 @@ DB_CONNECTION=sqlite
 - to populate sqlite file with dummy records go to `php artisan tinker` and run:
   `$products = \App\Models\Product::factory()->count(50)->create();`
 
+#### Screenshot:
+<img src="./demo.png" alt="Demo" width="800"/>
 
